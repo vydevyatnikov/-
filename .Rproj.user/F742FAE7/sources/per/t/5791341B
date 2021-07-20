@@ -1,0 +1,32 @@
+{
+    "id": "5791341B",
+    "path": null,
+    "project_path": null,
+    "type": "r_dataframe",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1626172722956.0,
+    "source_on_save": false,
+    "relative_order": 8,
+    "properties": {
+        "expression": "stability",
+        "caption": "stability",
+        "totalObservations": "7686",
+        "displayedObservations": "7686",
+        "variables": "25",
+        "cacheKey": "C5021BF6",
+        "object": "stability",
+        "environment": "",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=stability&cache_key=C5021BF6&max_cols=50",
+        "preview": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 2318265438588531822,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1626172722956,
+    "read_only": false,
+    "read_only_alternatives": []
+}

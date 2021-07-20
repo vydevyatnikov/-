@@ -1,0 +1,32 @@
+{
+    "id": "122F2DB6",
+    "path": null,
+    "project_path": null,
+    "type": "r_dataframe",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1626438898555.0,
+    "source_on_save": false,
+    "relative_order": 18,
+    "properties": {
+        "expression": "big_change_data",
+        "caption": "big_change_data",
+        "totalObservations": "425",
+        "displayedObservations": "425",
+        "variables": "17",
+        "cacheKey": "44EC76BC",
+        "object": "big_change_data",
+        "environment": "",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=big_change_data&cache_key=44EC76BC&max_cols=50",
+        "preview": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1626438777,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1626438898555,
+    "read_only": false,
+    "read_only_alternatives": []
+}

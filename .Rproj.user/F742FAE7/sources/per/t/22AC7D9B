@@ -1,0 +1,32 @@
+{
+    "id": "22AC7D9B",
+    "path": null,
+    "project_path": null,
+    "type": "r_dataframe",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1626691538812.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "expression": "gas_count_data",
+        "caption": "gas_count_data",
+        "totalObservations": "240",
+        "displayedObservations": "240",
+        "variables": "16",
+        "cacheKey": "125923B1",
+        "object": "gas_count_data",
+        "environment": "",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=gas_count_data&cache_key=125923B1&max_cols=50",
+        "preview": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 869476649735815350,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1626691538812,
+    "read_only": false,
+    "read_only_alternatives": []
+}

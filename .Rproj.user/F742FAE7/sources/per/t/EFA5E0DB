@@ -1,0 +1,32 @@
+{
+    "id": "EFA5E0DB",
+    "path": null,
+    "project_path": null,
+    "type": "r_dataframe",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1626287483839.0,
+    "source_on_save": false,
+    "relative_order": 4,
+    "properties": {
+        "expression": "pol_power_cleaned",
+        "caption": "pol_power_cleaned",
+        "totalObservations": "3923",
+        "displayedObservations": "3923",
+        "variables": "100",
+        "cacheKey": "BAECF0CB",
+        "object": "pol_power_cleaned",
+        "environment": "",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=pol_power_cleaned&cache_key=BAECF0CB&max_cols=50",
+        "preview": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1626287355,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1626287483839,
+    "read_only": false,
+    "read_only_alternatives": []
+}

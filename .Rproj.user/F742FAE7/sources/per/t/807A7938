@@ -1,0 +1,25 @@
+{
+    "id": "807A7938",
+    "path": null,
+    "project_path": null,
+    "type": "object_explorer",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1626338110684.0,
+    "source_on_save": false,
+    "relative_order": 12,
+    "properties": {
+        "id": "b805c1fb06704411b8776b587cd95a07",
+        "name": "dep_count_model",
+        "title": "dep_count_model"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 3180215545357154096,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1626338110684,
+    "read_only": false,
+    "read_only_alternatives": []
+}

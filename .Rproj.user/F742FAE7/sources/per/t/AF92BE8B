@@ -1,0 +1,32 @@
+{
+    "id": "AF92BE8B",
+    "path": null,
+    "project_path": null,
+    "type": "r_dataframe",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1626436382022.0,
+    "source_on_save": false,
+    "relative_order": 16,
+    "properties": {
+        "expression": "cleaned_resource_rents",
+        "caption": "cleaned_resource_rents",
+        "totalObservations": 4140,
+        "displayedObservations": 4140,
+        "variables": 6,
+        "cacheKey": "1D1C3645",
+        "object": "cleaned_resource_rents",
+        "environment": "",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=cleaned_resource_rents&cache_key=1D1C3645&max_cols=50",
+        "preview": 0
+    },
+    "folds": "",
+    "lastKnownWriteTime": 2095930516520,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1626436382022,
+    "read_only": false,
+    "read_only_alternatives": []
+}

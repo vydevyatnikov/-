@@ -1,0 +1,32 @@
+{
+    "id": "26D30AD1",
+    "path": null,
+    "project_path": null,
+    "type": "r_dataframe",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1626300237571.0,
+    "source_on_save": false,
+    "relative_order": 11,
+    "properties": {
+        "expression": "polity",
+        "caption": "polity",
+        "totalObservations": 17574,
+        "displayedObservations": 17574,
+        "variables": 37,
+        "cacheKey": "9A60480D",
+        "object": "polity",
+        "environment": "",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=polity&cache_key=9A60480D&max_cols=50",
+        "preview": 0
+    },
+    "folds": "",
+    "lastKnownWriteTime": 7954892334483841568,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1626300237571,
+    "read_only": false,
+    "read_only_alternatives": []
+}

@@ -1,0 +1,32 @@
+{
+    "id": "117141DB",
+    "path": null,
+    "project_path": null,
+    "type": "r_dataframe",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1626539427902.0,
+    "source_on_save": false,
+    "relative_order": 19,
+    "properties": {
+        "expression": "data_overall",
+        "caption": "data_overall",
+        "totalObservations": 2840,
+        "displayedObservations": 2840,
+        "variables": 15,
+        "cacheKey": "F609FE1D",
+        "object": "data_overall",
+        "environment": "",
+        "contentUrl": "grid_resource/gridviewer.html?env=&obj=data_overall&cache_key=F609FE1D&max_cols=50",
+        "preview": 0
+    },
+    "folds": "",
+    "lastKnownWriteTime": 2229883008304,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1626539427902,
+    "read_only": false,
+    "read_only_alternatives": []
+}

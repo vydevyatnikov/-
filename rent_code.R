@@ -350,7 +350,7 @@ model_polity = plm(Stability ~ Total_natural_resources_rent*polity2 + GDP_Growth
 model_1 = lm(Stability ~ Total_natural_resources_rent*regime_type_II + GDP_Growth + GDP_per_capita + log(Population_total) + factor(Country), data = data_overall)
 model_2 = plm(Stability ~ Mineral_rents + Natural_gas_rents + Oil_rents + other_source_rent + GDP_Growth + GDP_per_capita + log(Population_total), data = data_overall, model = "within")
 
-
+# Неиспользованные модели
 model_1 = plm(Stability ~ Total_natural_resources_rent*regime_type + GDP_Growth + GDP_per_capita + log(Population_total), data = data_overall, model = "within")
 model_2 = plm(Stability ~ Total_natural_resources_rent*dominant_resource + GDP_Growth + polity2 + GDP_per_capita + log(Population_total), data = data_overall, model = "within")
 model_3 = plm(Stability ~ Total_natural_resources_rent*dominant_resource + Total_natural_resources_rent*regime_type_II + GDP_Growth + polity2 + GDP_per_capita + log(Population_total), data = data_overall, model = "within")
@@ -380,7 +380,7 @@ p<- ggplot(plot_data, aes(x=polity_values, y=me)) +
                       position=position_dodge(0.9)) + theme_minimal() + xlab("Polity values") + ylab("ME(TRR)")
 print(p)
 
-
+### Не вошедшее ###
 
 # A try to draw me for regime type
 model1_me = c(model_1$coefficients[1], model_1$coefficients[1] + model_1$coefficients[6], model_1$coefficients[1] + model_1$coefficients[7])

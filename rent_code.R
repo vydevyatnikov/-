@@ -12,6 +12,7 @@ library("stats")
 library("tidyr")
 library(lmtest)
 library(sandwich)
+library(ggplot2)
 
 #### getting the data ####
 polity <- read.xlsx("p5v2018.xls", 1)
@@ -319,6 +320,9 @@ regime_type_II <- function(data) {
 final_dataset <- regime_type_I(final_dataset)
 final_dataset <- regime_type_II(final_dataset)
 
+final_dataset$regime_type_II <- as.factor(final_dataset$regime_type_II)
+final_dataset$dominant_resource_II <- as.factor(final_dataset$dominant_resource_II)
+
 # dataset with lagged variables
 final_dataset_lag <- filter(.data = final_dataset, !(Year %in% c(1996, 1998, 2000)))
 final_dataset_lag <- pdata.frame(final_dataset_lag, index = c("Country", "Year"), row.names = TRUE)
@@ -330,10 +334,120 @@ final_dataset_lag$lag_tnrr_4 <- stats::lag(final_dataset_lag[,11], k = 4)
 
 # forming datasets for analysis
 data_overall <- pdata.frame(final_dataset, index = c("Country", "Year"), row.names = TRUE)
+data_overall$other_source_rent <- data_overall$Total_natural_resources_rent - data_overall$Mineral_rents - data_overall$Natural_gas_rents - data_overall$Oil_rents
 data_dep_only <- pdata.frame(dep_count_data, index = c("Country", "Year"), row.names = TRUE)
 democracies <- filter(.data = final_dataset, regime_type_II == "Democratic")
 authoritarian <- filter(.data = final_dataset, regime_type_II == "Authoritarian")
 moderate <- filter(.data = final_dataset, regime_type_II == "Moderate")
+
+parts_of_the_world = c(c("Albania", "Europe"), c("Algeria", "Africa"), c("Angola", "Africa"), c("Argentina", "South America"),
+                       c("Armenia", "Europe"), c("Australia", 'Oceania'), c("Austria", "Europe"), c("Azerbaijan", "Europe"),
+                       c("Bahrain", 'Asia'), c("Bangladesh", "Asia"), c("Belarus", "Europe"))
+
+# New day - new me
+model_0 = plm(Stability ~ Total_natural_resources_rent + GDP_Growth + polity2 + GDP_per_capita + log(Population_total), data = data_overall, model = "within")
+model_polity = plm(Stability ~ Total_natural_resources_rent*polity2 + GDP_Growth + GDP_per_capita + log(Population_total), data = data_overall, model = "within")
+model_1 = lm(Stability ~ Total_natural_resources_rent*regime_type_II + GDP_Growth + GDP_per_capita + log(Population_total) + factor(Country), data = data_overall)
+model_2 = plm(Stability ~ Mineral_rents + Natural_gas_rents + Oil_rents + other_source_rent + GDP_Growth + GDP_per_capita + log(Population_total), data = data_overall, model = "within")
+
+
+model_1 = plm(Stability ~ Total_natural_resources_rent*regime_type + GDP_Growth + GDP_per_capita + log(Population_total), data = data_overall, model = "within")
+model_2 = plm(Stability ~ Total_natural_resources_rent*dominant_resource + GDP_Growth + polity2 + GDP_per_capita + log(Population_total), data = data_overall, model = "within")
+model_3 = plm(Stability ~ Total_natural_resources_rent*dominant_resource + Total_natural_resources_rent*regime_type_II + GDP_Growth + polity2 + GDP_per_capita + log(Population_total), data = data_overall, model = "within")
+model_4 = plm(Stability ~ Total_natural_resources_rent*dominant_resource*regime_type_II + GDP_Growth + polity2 + GDP_per_capita + log(Population_total), data = data_overall, model = "within")
+
+# me of trr*democratic and trr*moderate 
+model1_me = c(model_1$coefficients[2], model_1$coefficients[2]+model_1$coefficients[149], model_1$coefficients[2]+model_1$coefficients[150])
+se = sqrt(c(vcov(model_1)[2,2], vcov(model_1)[2,2] + vcov(model_1)[149,149] + vcov(model_1)[2,149], vcov(model_1)[2,2] + vcov(model_1)[150,150] + vcov(model_1)[2,150]))
+plot_data = data.frame(me = model1_me, lb = model1_me - qnorm(0.975)*se, ul = model1_me + qnorm(0.975)*se, regime_type = c("Authoritarian", "Democratic", "Moderate"))
+
+
+p<- ggplot(plot_data, aes(x=regime_type, y=me)) + 
+        geom_point() +
+        geom_errorbar(aes(ymin=lb, ymax=ul), width=.2,
+                      position=position_dodge(0.9)) + theme_minimal() + xlab("Regime Type") + ylab("ME(TRR)")
+print(p)
+
+# me of trr with polity interaction
+model_polity_me = model_polity$coefficients[1] + unique(data_overall$polity2)*model_polity$coefficients[6]
+se = sqrt(model_polity$vcov[1,1] + (unique(data_overall$polity2)^2)*model_polity$vcov[6,6] + 2*unique(data_overall$polity2)*model_polity$vcov[1,6])
+plot_data = data.frame(me = model1_me, lb = model1_me - qnorm(0.975)*se, ul = model1_me + qnorm(0.975)*se, polity_values = unique(data_overall$polity2))
+
+
+p<- ggplot(plot_data, aes(x=polity_values, y=me)) + 
+        geom_point() +
+        geom_errorbar(aes(ymin=lb, ymax=ul), width=.2,
+                      position=position_dodge(0.9)) + theme_minimal() + xlab("Polity values") + ylab("ME(TRR)")
+print(p)
+
+
+
+# A try to draw me for regime type
+model1_me = c(model_1$coefficients[1], model_1$coefficients[1] + model_1$coefficients[6], model_1$coefficients[1] + model_1$coefficients[7])
+se = sqrt(c(model_1$vcov[1,1], model_1$vcov[1,1] + model_1$vcov[6,6] + 2*(model_1$vcov[1,6]), model_1$vcov[1,1] + model_1$vcov[7,7] + 2*(model_1$vcov[1,7])))
+plot_data = data.frame(me = model1_me, lb = model1_me - qnorm(0.975)*se, ul = model1_me + qnorm(0.975)*se, regime_type = c("Authoritarian", "Democratic", "Moderate"))
+
+
+p<- ggplot(plot_data, aes(x=regime_type, y=me)) + 
+        geom_point() +
+        geom_errorbar(aes(ymin=lb, ymax=ul), width=.2,
+                      position=position_dodge(0.9)) + theme_minimal()
+print(p)
+
+# A try to draw me for dominant resource type
+model2_me = c(model_2$coefficients[1], model_2$coefficients[1] + model_2$coefficients[6], model_2$coefficients[1] + model_2$coefficients[7])
+se = sqrt(c(model_2$vcov[1,1], model_2$vcov[1,1] + model_2$vcov[6,6] + 2*(model_2$vcov[1,6]), model_2$vcov[1,1] + model_2$vcov[7,7] + 2*(model_2$vcov[1,7])))
+plot_data = data.frame(me = model2_me, lb = model2_me - qnorm(0.975)*se, ub = model2_me + qnorm(0.975)*se, regime_type = c("Minerals", "Natural Gas", "Oil"))
+
+p<- ggplot(plot_data, aes(x=regime_type, y=me)) + 
+        geom_point() +
+        geom_errorbar(aes(ymin=lb, ymax=ub), width=.2,
+                      position=position_dodge(.9)) + theme_minimal()
+print(p)
+
+# A try to draw me for fourth model
+model4_me = c(model_4$coefficients[1], model_4$coefficients[1] + model_4$coefficients[6], model_4$coefficients[1] + model_4$coefficients[7], 
+              model_4$coefficients[1] + model_4$coefficients[8], model_4$coefficients[1] + model_4$coefficients[9], 
+              model_4$coefficients[1] + model_4$coefficients[6] + model_4$coefficients[8] + model_4$coefficients[10],
+              model_4$coefficients[1] + model_4$coefficients[7] + model_4$coefficients[8] + model_4$coefficients[11],
+              model_4$coefficients[1] + model_4$coefficients[6] + model_4$coefficients[9] + model_4$coefficients[12],
+              model_4$coefficients[1] + model_4$coefficients[7] + model_4$coefficients[9] + model_4$coefficients[13])
+se = c(model_4$vcov[1,1],
+            model_4$vcov[1,1] + model_4$vcov[6,6] + 2*model_4$vcov[1,6],
+            model_4$vcov[1,1] + model_4$vcov[7,7] + 2*model_4$vcov[1,7],
+            model_4$vcov[1,1] + model_4$vcov[8,8] + 2*model_4$vcov[1,8],
+            model_4$vcov[1,1] + model_4$vcov[9,9] + 2*model_4$vcov[1,9],
+            model_4$vcov[1,1] + model_4$vcov[6,6] + model_4$vcov[8,8] + model_4$vcov[10,10] + 2*(model_4$vcov[1,6] + model_4$vcov[1,8] + model_4$vcov[1,10] + model_4$vcov[6,8] + model_4$vcov[6,10] + model_4$vcov[8,10]),
+            model_4$vcov[1,1] + model_4$vcov[7,7] + model_4$vcov[8,8] + model_4$vcov[11,11] + 2*(model_4$vcov[1,7] + model_4$vcov[1,8] + model_4$vcov[1,11] + model_4$vcov[7,8] + model_4$vcov[7,11] + model_4$vcov[8,11]),
+            model_4$vcov[1,1] + model_4$vcov[6,6] + model_4$vcov[9,9] + model_4$vcov[12,12] + 2*(model_4$vcov[1,6] + model_4$vcov[1,9] + model_4$vcov[1,12] + model_4$vcov[6,9] + model_4$vcov[6,12] + model_4$vcov[9,12]),
+            model_4$vcov[1,1] + model_4$vcov[7,7] + model_4$vcov[9,9] + model_4$vcov[13,13] + 2*(model_4$vcov[1,7] + model_4$vcov[1,9] + model_4$vcov[1,13] + model_4$vcov[7,9] + model_4$vcov[7,13] + model_4$vcov[9,13]))
+
+
+
+plot_data = data.frame(me = model4_me, lb = model4_me - qnorm(0.975)*se, ub = model4_me + qnorm(0.975)*se, groups = c("A-M", "A-G", "A-O", "D-M", "M-M", 'D-G', "D-O", "M-G", "M-O"))
+
+p<- ggplot(plot_data, aes(x=groups, y=me)) + 
+        geom_point() +
+        geom_errorbar(aes(ymin=lb, ymax=ub), width=.2,
+                      position=position_dodge(.9)) + theme_minimal()
+print(p)
+
+#without M-G
+plot_data <- plot_data[-8,]
+p<- ggplot(plot_data, aes(x=groups, y=me)) + 
+        geom_point() +
+        geom_errorbar(aes(ymin=lb, ymax=ub), width=.2,
+                      position=position_dodge(.9)) + theme_minimal()
+print(p)
+
+#without M-G
+plot_data <- plot_data[-6,]
+p<- ggplot(plot_data, aes(x=groups, y=me)) + 
+        geom_point() +
+        geom_errorbar(aes(ymin=lb, ymax=ub), width=.2,
+                      position=position_dodge(.9)) + theme_minimal()
+print(p)
+
 
 #modeling the data
 overall_model <- plm(Stability ~ Total_natural_resources_rent + GDP_Growth + polity2 + GDP_per_capita + log(Population_total), data = data_overall, model = "within")
@@ -354,3 +468,11 @@ lag_model_3 <- plm(Stability ~ Total_natural_resources_rent + GDP_Growth + polit
 lag_model_4 <- plm(Stability ~ Total_natural_resources_rent + GDP_Growth + polity2 + GDP_per_capita  + log(Population_total) + lag_tnrr_1 + lag_tnrr_2 + lag_tnrr_3 + lag_tnrr_4, data = final_dataset_lag, model = "within", index = c("Country", "Year"))
 
 
+
+test_data_frame <- read.csv("finite_data_copy.csv")
+uik <- test_data_frame[(test_data_frame[,10] >= 2016) & (test_data_frame[,14] == "regional"),c(8, 9, 10)]
+uik[1,]
+write.csv(uik, file = "uik_nums_regional.csv", fileEncoding = "UTF-8")
+help("write.csv")
+
+write.csv(final_dataset,"rent_data.csv", row.names = FALSE)
